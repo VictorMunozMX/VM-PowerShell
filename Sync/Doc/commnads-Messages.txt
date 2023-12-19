@@ -1,0 +1,25 @@
+// mensaje a pantalla
+$msgBody = "This is a simple message with just the default OK button"
+[System.Windows.MessageBox]::Show($msgBody)
+
+// mensaje a pantalla con opciones 
+$msgBody = "Reboot the computer now?"
+$msgTitle = "Confirm Reboot"
+$msgButton = 'YesNoCancel'
+$msgImage = 'Question'
+$Result = [System.Windows.MessageBox]::Show($msgBody,$msgTitle,$msgButton,$msgImage)
+Write-Host "The user chose: $Result [" ($result).value__ "]"
+
+// mensaje a window and delay time
+[System.Windows.MessageBox]::Show("Hola")
+timeout /t 5
+[System.Windows.MessageBox]::Show("Fin")
+
+// new line
+Write-Host "`n"
+
+// send message
+write-host "Completed script!"    
+
+// wating to enter any key
+read-host “Press ENTER to continue...”

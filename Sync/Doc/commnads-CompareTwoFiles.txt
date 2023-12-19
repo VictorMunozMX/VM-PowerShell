@@ -1,0 +1,26 @@
+$folderOrigen = "C:\Users\Enrique.Munoz\OneDrive - Solera Holdings, Inc\Documents\Releases\CopyFoldersUIFiles\iol" 
+Get-ChildItem -Path $folderOrigen -Recurse
+
+$folder1 = "C:\Users\jscott" 
+$folder2 = "C:\Users\public" 
+
+# Get all files under $folder1, filter out directories 
+
+$firstFolder = Get-ChildItem -Recurse $folder1 | Where-Object { -not $_.PsIsContainer } 
+$firstFolder | ForEach-Object { 
+
+# Check if the file, from $folder1, exists with the same path under $folder2 
+
+If ( Test-Path ( $_.FullName.Replace($folder1, $folder2) ) ) { 
+
+# Compare the contents of the two files... 
+If ( Compare-Object (Get-Content $_.FullName) (Get-Content $_.FullName.Replace($folder1, $folder2) ) ) { 
+
+# List the paths of the files containing diffs 
+$_.FullName 
+$_.FullName.Replace($folder1, $folder2) 
+} 
+}
+}
+
+Fuente: https://www.enmimaquinafunciona.com/pregunta/12998/como-puedo-diferenciar-dos-carpetas-en-windows-powershell

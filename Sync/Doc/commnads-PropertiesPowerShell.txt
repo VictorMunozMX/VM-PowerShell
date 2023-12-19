@@ -1,0 +1,52 @@
+// localhost
+$folderOrigen = "C:\Users\Enrique.Munoz\OneDrive - Solera Holdings, Inc\Documents\Releases\CopyFoldersUIFiles\iol" 
+$folderDest   = "C:\Users\Enrique.Munoz\OneDrive - Solera Holdings, Inc\Documents\Releases\CopyFoldersUIFiles\stage" 
+$logFilePath  = "C:\Users\Enrique.Munoz\OneDrive - Solera Holdings, Inc\Documents\Releases\CopyFoldersUIFiles\PSScriptLog.txt"
+
+// brinca las credentials para remote sign
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope LocalMachine
+Get-ExecutionPolicy -List
+
+Set-ExecutionPolicy -ExecutionPolicy Undefined -Scope LocalMachine
+// obtiene la politica de un remote y la asigna al local
+Invoke-Command -ComputerName Server01 -ScriptBlock { Get-ExecutionPolicy } | Set-ExecutionPolicy
+
+// asgina una politica a un user
+Set-ExecutionPolicy -ExecutionPolicy AllSigned -Scope CurrentUser
+Get-ExecutionPolicy -List
+
+// elimina la politica para un user
+Set-ExecutionPolicy -ExecutionPolicy Undefined -Scope CurrentUser
+Get-ExecutionPolicy -List
+
+// elimina la politica para la sesion activa al cerrar la regresa
+Set-ExecutionPolicy -ExecutionPolicy AllSigned -Scope Process
+
+// valida el codigo para ver que sea seguro y lo ejecuta sin modificar la politica 
+Unblock-File -Path .\Start-ActivityTracker.ps1
+Get-ExecutionPolicy
+
+// Obtiene el contenido de un dir
+Get-ChildItem -Path C:\basura\iol -Force
+
+// Obtiene el contenido de un dir incluyento el contenido de las mismas
+Get-ChildItem -Path C:\basura\iol -Force -Recurse
+
+// busqueda con filtro de exe y a partir de una fecha y un tamaño
+Get-ChildItem -Path $env:ProgramFiles -Recurse -Include *.exe | Where-Object -FilterScript {($_.LastWriteTime -gt '2005-10-01') -and ($_.Length -ge 1mb) -and ($_.Length -le 10mb)}
+
+// copiar archivos
+Copy-Item -Path C:\boot.ini -Destination C:\boot.bak
+
+// copiar archivos en caso de existir, sobreescribir
+Copy-Item -Path C:\boot.ini -Destination C:\boot.bak -Force
+
+// copia carpetas
+Copy-Item C:\temp\test1 -Recurse C:\temp\DeleteMe
+
+// copia carpeta con especificos archivos
+Copy-Item -Filter *.txt -Path c:\data -Recurse -Destination C:\temp\text
+
+// execute from command line
+powershell.exe -ExecutionPolicy Bypass -File "C:\Users\Enrique.Munoz\OneDrive - Solera Holdings, Inc\Documents\Releases\CopyFoldersUIFiles\FoldersFound.ps1"
+
